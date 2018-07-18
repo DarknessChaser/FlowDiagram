@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>基于GOJS封装的流程图设计（展示）工具类</title>
+<meta name="description" content="" />
+<!-- Copyright 1998-2016 by Northwoods Software Corporation. -->
+<meta charset="UTF-8">
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="layer/layer.js"></script>
+    <script src="go.js"></script>
+    <script src="flow-desinger.js"></script>
+    <script src="flow-display.js"></script>
+</head>
+<body>
+<div id="sample" style="width:80%;margin: 0 auto">
+  <div style="width:100%; white-space:nowrap;">
+    <!--  控件 -->
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:110px">
+      <div id="myPaletteDiv" style="border: solid 1px black; height: 420px"></div>
+    </span>
+
+    <!--  设计面板 -->
+    <span style="display: inline-block; vertical-align: top; padding: 5px; width:80%">
+      <div id="myFlowDesignerDiv" style="border: solid 1px black; height: 420px"></div>
+    </span>
+  </div>
+
+  <div>
+    <div>
+      <button id="btnCreate" onclick="doCreateStep()">新建步骤</button>
+      <button id="btnSave" onclick="saveDesigner()">保存设计图</button>
+    </div>
+    <textarea id="mySavedModel" style="width:100%;height:300px">
+{ "class": "go.GraphLinksModel",
+  "modelData": {"position":"-5 -5"},
+  "nodeDataArray": [
+{"key":"b12af1d1-ffe1-4a92-949e-fbd212f0ab2b", "text":"开始", "figure":"Circle", "fill":"#4E6E7D", "stepType":1, "loc":"190 180"},
+{"key":"629098b6-4404-4eb0-99c7-cbe913eba965", "text":"新步骤", "remark":"", "loc":"400 180"},
+{"key":"d01b793a-51ac-4c83-b737-5ef73e6bfea1", "text":"结束", "figure":"Circle", "fill":"#4E6E7D", "stepType":4, "loc":"720 180"}
+ ],
+  "linkDataArray": [
+{"from":"b12af1d1-ffe1-4a92-949e-fbd212f0ab2b", "to":"629098b6-4404-4eb0-99c7-cbe913eba965"},
+{"from":"629098b6-4404-4eb0-99c7-cbe913eba965", "to":"d01b793a-51ac-4c83-b737-5ef73e6bfea1"}
+ ]}
+    </textarea>
+  </div>
+
+</div>
+</body>
+<script type="text/javascript">
+    var areaFlow = document.getElementById('mySavedModel');
+
+    // 流程图设计器
+    var  myDesigner= new FlowDesigner('myFlowDesignerDiv');
+    myDesigner.initToolbar('myPaletteDiv');// 初始化控件面板
+    myDesigner.displayFlow(areaFlow.value);// 在设计面板中显示流程图
+
+    /**
+     * 创建步骤
+     */
+    var doCreateStep = function () {
+        if(!myDesigner) return;
+
+        myDesigner.createStep();
+    };
+
+    /**
+     * 保存设计图中的数据
+     */
+    var saveDesigner = function(){
+//      var errMsg = myDesigner.checkData();
+//      if(errMsg){
+//          layer.msg(errMsg);
+//          return;
+//      }
+      areaFlow.value = myDesigner.getFlowData();
+    };
+
+</script>
+</html>
